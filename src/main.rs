@@ -1,10 +1,10 @@
-use chess::{Board, MoveGen};
+mod game;
+
+use game::Game;
 
 fn main() {
-    let board = Board::default();
-    let movegen = MoveGen::new_legal(&board);
 
-    for m in movegen {
-        println!("{}", m);
-    }
+    let g = Game::default();
+
+    g.print_board();
 }
