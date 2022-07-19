@@ -28,8 +28,8 @@ impl ChessUI {
         }
 
         match color {
-            Color::White => unicode_val += 0,
-            Color::Black => unicode_val += 6
+            Color::White => unicode_val += 6,
+            Color::Black => unicode_val += 0
         }
 
         return char::from_u32(unicode_val).unwrap();
@@ -58,5 +58,31 @@ impl ChessUI {
         println!("{}", board_str);
     }
 
+    pub fn print_legal_moves(&self) {
+        
+        for legal_move in self.game.get_legal_moves() {
+            println!("{}", legal_move);
+        }
+
+        println!("{:?}", self.game.get_side_to_move());
+
+    }
+
+    pub fn input_move(&mut self) {
+
+        let mut str_move = String::new();
+
+        while ! self.game.is_move_legal(&str_move) {
+            stdin().read_line(&mut str_move).expect("Failed to read line");
+            str_move = String::from(str_move.trim());
+            if ! self.game.is_move_legal(&str_move) {
+                println!("Not valid move");
+            }
+
+        }
+
+        self.game.make_move(str_move);
+
+    }
 
 }

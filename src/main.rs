@@ -8,7 +8,10 @@ fn main() {
 
     let g = Game::default();
 
-    let ui = ChessUI::from(g);
+    let mut ui = ChessUI::from(g);
 
+    ui.print_board();
+    ui.print_legal_moves();
+    ui.input_move();
     ui.print_board();
 }
