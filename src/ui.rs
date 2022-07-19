@@ -1,4 +1,6 @@
 
+use std::io::stdin;
+
 use chess::{Square, Piece, Color};
 use crate::game::Game;
 
@@ -33,7 +35,7 @@ impl ChessUI {
         return char::from_u32(unicode_val).unwrap();
     }
 
-    pub fn print_board(self) {
+    pub fn print_board(&self) {
         
         let board = self.game.get_board();
         let mut board_str = String::from("");
