@@ -1,5 +1,6 @@
 mod game;
 mod ui;
+mod player;
 
 use game::Game;
 use ui::ChessUI;

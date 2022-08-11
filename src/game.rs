@@ -1,9 +1,13 @@
 use std::str::FromStr;
 
+use crate::player::{Player, HumanPlayer, BotPlayer};
+
 use chess::{Board, Rank, File, ChessMove, MoveGen, Color};
 
 pub struct Game {
-   board: Board,
+    player_white: Box<dyn Player>,
+    player_black: Box<dyn Player>,
+    board: Board,
 }
 
 impl Game {
@@ -13,7 +17,11 @@ impl Game {
     pub const FILES : [File; 8] = [File::A, File::B, File::C, File::D, File::E, File::F, File::G, File::H];
 
     pub fn default() -> Game {
-        return Game { board: (Board::default())}
+        return Game {
+            player_white : Box::new(HumanPlayer::default()),
+            player_black : Box::new(BotPlayer::default()),
+            board : Board::default(),
+        }
     }
 
     pub fn get_board(&self) -> Board {
