@@ -44,6 +44,7 @@ impl Player for BotPlayer {
     }
 
     fn make_move(&self, board : &Board) -> ChessMove {
+        board.is_sane();
         return ChessMove::from_str("g1h3").unwrap();
     }
 }
