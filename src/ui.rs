@@ -1,6 +1,3 @@
-
-use std::io::stdin;
-
 use chess::{Square, Piece, Color};
 use crate::game::Game;
 
@@ -68,21 +65,7 @@ impl ChessUI {
 
     }
 
-    pub fn input_move(&mut self) {
-
-        let mut str_move = String::new();
-
-        while ! self.game.is_move_legal(&str_move) {
-            stdin().read_line(&mut str_move).expect("Failed to read line");
-            str_move = String::from(str_move.trim());
-            if ! self.game.is_move_legal(&str_move) {
-                println!("Not valid move");
-            }
-
-        }
-
-        self.game.make_move(str_move);
-
+    pub fn take_move(&mut self) {
+        self.game.take_current_player_turn();
     }
-
 }

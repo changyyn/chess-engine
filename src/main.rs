@@ -1,6 +1,7 @@
 mod game;
 mod ui;
 mod player;
+mod util;
 
 use game::Game;
 use ui::ChessUI;
@@ -13,6 +14,6 @@ fn main() {
 
     ui.print_board();
     ui.print_legal_moves();
-    ui.input_move();
+    ui.take_move();
     ui.print_board();
 }

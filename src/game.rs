@@ -10,20 +10,22 @@ pub struct Game {
     board: Board,
 }
 
+impl Default for Game {
+    fn default() -> Self {
+        Game {
+            player_white: Box::new(HumanPlayer::default()),
+            player_black: Box::new(BotPlayer::default()),
+            board: Board::default(),
+        }
+    }
+}
+
 impl Game {
 
     // pub const RANKS : [Rank; 8] = [Rank::First, Rank::Second, Rank::Third, Rank::Fourth, Rank::Fifth, Rank::Sixth, Rank::Seventh, Rank::Eighth];
     pub const RANKS : [Rank; 8] = [Rank::Eighth, Rank::Seventh, Rank::Sixth, Rank::Fifth, Rank::Fourth, Rank::Third, Rank::Second, Rank::First];
     pub const FILES : [File; 8] = [File::A, File::B, File::C, File::D, File::E, File::F, File::G, File::H];
-
-    pub fn default() -> Game {
-        return Game {
-            player_white : Box::new(HumanPlayer::default()),
-            player_black : Box::new(BotPlayer::default()),
-            board : Board::default(),
-        }
-    }
-
+    
     pub fn get_board(&self) -> Board {
         self.board.clone()
     }
@@ -36,13 +38,13 @@ impl Game {
         self.board.side_to_move()
     }
 
-    pub fn is_move_legal(&self, move_str : &String) -> bool {
-        
-        if move_str.len() != 4 {
-            return false;
-        }
+    pub fn take_current_player_turn(&mut self) {
+        let chess_move = match self.get_side_to_move() {
+            Color::White => self.player_white.make_move(&self.board),
+            Color::Black => self.player_black.make_move(&self.board)
+        };
 
-        return self.board.legal(ChessMove::from_str(move_str).unwrap());
+        self.make_move(chess_move.to_string());
     }
 
     pub fn make_move(&mut self, move_str: String) {
