@@ -1,8 +1,6 @@
-use std::str::FromStr;
-
 use chess::{Board, Color, ChessMove};
 
-use crate::util::human_input_functions;
+use crate::util::{human_input_functions, eval_functions};
 
 pub trait Player {
     fn get_color(&self) -> Color;
@@ -36,6 +34,13 @@ impl Player for HumanPlayer {
 
 pub struct BotPlayer {
     color : Color,
+    eval_fn : fn(&Board) -> ChessMove,
+}
+
+impl Default for BotPlayer {
+    fn default() -> Self {
+        BotPlayer { color: Color::Black, eval_fn: eval_functions::random_eval }
+    }
 }
 
 impl Player for BotPlayer {
@@ -44,13 +49,7 @@ impl Player for BotPlayer {
     }
 
     fn make_move(&self, board : &Board) -> ChessMove {
-        board.is_sane();
-        return ChessMove::from_str("g1h3").unwrap();
+        (self.eval_fn)(&board)
     }
 }
 
-impl BotPlayer {
-    pub fn default() -> BotPlayer {
-        BotPlayer { color: Color::Black }
-    }
-}

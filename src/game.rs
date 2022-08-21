@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use crate::player::{Player, HumanPlayer, BotPlayer};
 
-use chess::{Board, Rank, File, ChessMove, MoveGen, Color};
+use chess::{Board, Rank, File, ChessMove, MoveGen, Color, BoardStatus};
 
 pub struct Game {
     player_white: Box<dyn Player>,
@@ -29,6 +29,10 @@ impl Game {
     pub fn get_board(&self) -> Board {
         self.board.clone()
     }
+
+    pub fn get_status(&self) -> BoardStatus {
+        self.board.status()
+    } 
 
     pub fn get_legal_moves(&self) -> MoveGen {
         MoveGen::new_legal(&self.board)

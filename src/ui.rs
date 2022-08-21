@@ -1,4 +1,4 @@
-use chess::{Square, Piece, Color};
+use chess::{Square, Piece, Color, BoardStatus};
 use crate::game::Game;
 
 
@@ -65,7 +65,12 @@ impl ChessUI {
 
     }
 
-    pub fn take_move(&mut self) {
-        self.game.take_current_player_turn();
+
+    pub fn run(&mut self) {
+        while self.game.get_status() == BoardStatus::Ongoing {
+            self.print_board();
+            self.print_legal_moves();
+            self.game.take_current_player_turn();
+        }
     }
 }
