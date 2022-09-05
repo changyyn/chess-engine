@@ -35,9 +35,12 @@ impl ChessUI {
     pub fn print_board(&self) {
         
         let board = self.game.get_board();
-        let mut board_str = String::from("");
+        let mut board_str = String::from("  a b c d e f g h\n");
 
-        for rank in Game::RANKS {
+        for (i, rank) in Game::RANKS.into_iter().enumerate() {
+            let rank_num = 8 - i;
+            board_str.push_str(&rank_num.to_string());
+            board_str.push(' ');
             for file in Game::FILES { 
                 let square = Square::make_square(rank, file);
                 let piece = board.piece_on(square);
@@ -49,8 +52,11 @@ impl ChessUI {
                     None => board_str.push_str("  ")
                 }
             }
+            board_str.push(' ');
+            board_str.push_str(&rank_num.to_string());
             board_str.push('\n');
         }
+        board_str.push_str("  a b c d e f g h\n");
 
         println!("{}", board_str);
     }
@@ -69,7 +75,7 @@ impl ChessUI {
     pub fn run(&mut self) {
         while self.game.get_status() == BoardStatus::Ongoing {
             self.print_board();
-            self.print_legal_moves();
+            //self.print_legal_moves();
             self.game.take_current_player_turn();
         }
     }
