@@ -1,55 +1,22 @@
-use chess::{Board, Color, ChessMove};
+use chess::{Board, ChessMove, MoveGen};
 
-use crate::util::{human_input_functions, eval_functions};
-
-pub trait Player {
-    fn get_color(&self) -> Color;
-    fn make_move(&self, board : &Board) -> ChessMove ;
+pub enum Player {
+    Human(fn(&Board)->ChessMove),
+    Bot(fn(&Board)->f64),
 }
 
-pub struct HumanPlayer {
-    color : Color,
-    input_fn : fn(&Board) -> ChessMove,
-}
-
-impl Default for HumanPlayer {
-    fn default() -> Self {
-        HumanPlayer {
-            color : Color::White,
-            input_fn : human_input_functions::console_input,
+impl Player {
+    pub fn make_move(&self, board : &Board) -> ChessMove{
+        use rand::{seq::IteratorRandom};
+        
+        match *self { 
+            Player::Human(f) => f(board),
+            Player::Bot(_) => {
+                let chess_moves = MoveGen::new_legal(&board);
+        
+                chess_moves.choose(&mut rand::thread_rng()).unwrap()
+            }
         }
-    }
-}
-
-impl Player for HumanPlayer {
-
-    fn get_color(&self) -> Color {
-        self.color
-    }
-
-    fn make_move(&self, board : &Board) -> ChessMove {
-        (self.input_fn)(&board)
-    }
-}
-
-pub struct BotPlayer {
-    color : Color,
-    eval_fn : fn(&Board) -> ChessMove,
-}
-
-impl Default for BotPlayer {
-    fn default() -> Self {
-        BotPlayer { color: Color::Black, eval_fn: eval_functions::random_eval }
-    }
-}
-
-impl Player for BotPlayer {
-    fn get_color(&self) -> Color {
-        self.color
-    }
-
-    fn make_move(&self, board : &Board) -> ChessMove {
-        (self.eval_fn)(&board)
     }
 }
 

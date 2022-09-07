@@ -40,5 +40,9 @@ pub mod eval_functions {
         chess_moves.choose(&mut rand::thread_rng()).unwrap()
     }
 
+    pub fn constant_eval(board: &Board) -> f64 {
+        1.0
+    }
+
 
 }

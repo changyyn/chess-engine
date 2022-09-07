@@ -1,20 +1,21 @@
 use std::str::FromStr;
 
-use crate::player::{Player, HumanPlayer, BotPlayer};
+use crate::player::{Player};
+use crate::util::{human_input_functions, eval_functions};
 
 use chess::{Board, Rank, File, ChessMove, MoveGen, Color, BoardStatus};
 
 pub struct Game {
-    player_white: Box<dyn Player>,
-    player_black: Box<dyn Player>,
+    player_white: Player,
+    player_black: Player,
     board: Board,
 }
 
 impl Default for Game {
     fn default() -> Self {
         Game {
-            player_white: Box::new(HumanPlayer::default()),
-            player_black: Box::new(BotPlayer::default()),
+            player_white: Player::Human(human_input_functions::console_input),
+            player_black: Player::Bot(eval_functions::constant_eval),
             board: Board::default(),
         }
     }
